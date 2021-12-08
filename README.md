@@ -9,7 +9,7 @@ npm -i
 ```
 
 2. 配置设置
-3. 
+
 重命名`wrangler.sample.toml`为`wrangler.toml`
 
 更改`wrangler.toml`中`name = "yande"`与`account_id = "账户ID"`选项，更改为自己的设置
