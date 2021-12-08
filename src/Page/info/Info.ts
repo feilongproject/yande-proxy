@@ -101,7 +101,7 @@ export async function GetPageInfo(postId: number): Promise<string> {
     var postImg = `<img alt="${postInfo.tags}" id="image" class="image js-notes-manager--toggle js-notes-manager--image" width="${postInfo.sample_width}" height="${postInfo.sample_height}" large_width="${postInfo.width}" large_height="${postInfo.height}" src="${postInfo.sample_url}">`
 
 
-    var page = await (await fetch("https://raw.githubusercontent.com/feilongproject/yande-proxy/main/html/id.html")).text()
+    var page = await (await fetch("https://raw.githubusercontent.com/feilongproject/yande-proxy/master/html/PostInfo.html")).text()
 
     //console.log(page)
 
