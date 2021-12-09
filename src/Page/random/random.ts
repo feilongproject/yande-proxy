@@ -8,7 +8,7 @@ export async function GetPageRandom(): Promise<string> {
     const json = await GetJson(link)
     console.log(json)
 
-    var page = await (await fetch("https://raw.githubusercontent.com/feilongproject/yande-proxy/main/html/post.html")).text()//
+    var page = await (await fetch("https://raw.githubusercontent.com/feilongproject/yande-proxy/master/html/PostList.html")).text()//
 
     var preview_list = ""
 
