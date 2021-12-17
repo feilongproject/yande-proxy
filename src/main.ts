@@ -3,6 +3,7 @@ import { GetPageInfo } from './Page/info/Info'
 import { Get404 } from './Page/404'
 import { GetPageRandom } from './Page/random/random'
 import { GetHeaders } from './mod/GetHeaders'
+import { ApiGetRandom } from './Api/random'
 
 const robot = `User-agent: AhrefsBot
 Disallow: /
@@ -21,32 +22,47 @@ async function Main(request: Request): Promise<Response> {
     console.log(`\npath0: ${Path[0]}\npath1: ${Path[1]}\npath2: ${Path[2]}\npath3: ${Path[3]}`)
 
 
-
     switch (Path[0]) {
+        case "favicon.ico":
+            return await fetch("https://raw.githubusercontent.com/feilongproject/yande-proxy/main/html/404.html")
         case "robots.txt":
-            console.log("robot page")
+            console.log("page: robot")
             return new Response(robot, GetHeaders("txt"))
         case "":
-            console.log("post page")
+            console.log("page: post")
             var post = requestURL.searchParams.get("page")
             if (!post) post = "1"
             return new Response(await GetPagePost(parseInt(post)), GetHeaders("html"))
+        case "api":
+            console.log("api getting")
+            switch (Path[1]) {
+                case "random":
+                    console.log("api: random")
+                    var ratt = requestURL.searchParams.get("rat"), rat
+                    var mobile = requestURL.searchParams.get("m") ? true : false
+                    var tags = requestURL.searchParams.get("tags")
+                    if (ratt?.split("").length == 3)
+                        rat = parseInt(ratt, 2)
+                    else rat = ratt ? parseInt(ratt) : 1
+                    if (!tags) tags = "arknights"
+
+                    return ApiGetRandom(rat, mobile, tags)
+            }
         case "post":
             switch (Path[1]) {
                 case "":
-                    console.log("post page")
+                    console.log("page: post")
                     var post = requestURL.searchParams.get("page")
                     if (!post) post = "1"
                     return new Response(await GetPagePost(parseInt(post)), GetHeaders("html"))
                 case "show":
                     var postId = parseInt(Path[2])
-                    console.log(`post info page ,id: ${postId}`)
+                    console.log(`page: post info ,id: ${postId}`)
                     if (postId) return new Response(await GetPageInfo(postId), GetHeaders("html"))
                     else return new Response(await Get404(), GetHeaders("html"))
                 case "random":
-                    console.log("post random page")
+                    console.log("page: post random")
                     return new Response(await GetPageRandom(), GetHeaders("html"))
-
             }
         default:
             console.log("null page")
