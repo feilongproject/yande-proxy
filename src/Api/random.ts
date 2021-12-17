@@ -1,13 +1,3 @@
-import { GetJson } from '../mod/GetJson'
-/**
- * 
- * @param rat 等级
- * 可选001->111（二进制）
- * 第一位：safe,第二位questionable,第三位explicit
- * @param mobile 是否手机格式
- * @param tag tag
- * @returns fetch后资源
- */
 const ratType = [
     "",
     "  s",//1->001
@@ -18,7 +8,15 @@ const ratType = [
     "eq ",//6->110
     "eqs",//7->111
 ]
-
+/**
+ * 
+ * @param rat 等级
+ * 可选001->111（二进制）
+ * 第一位：safe,第二位questionable,第三位explicit
+ * @param mobile 是否手机格式
+ * @param tag tag
+ * @returns fetch后资源
+ */
 export async function ApiGetRandom(rat: number, mobile: boolean, tag: string,): Promise<Response> {
     console.log(`rat: ${ratType[rat]}\nmobile: ${mobile}\ntag: ${tag}`)
 
@@ -73,7 +71,6 @@ export async function ApiGetRandom(rat: number, mobile: boolean, tag: string,): 
                     "content-type": "image/jpeg"
                 }
             })
-            return pic_blob
 
         }
 
