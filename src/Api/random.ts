@@ -68,6 +68,11 @@ export async function ApiGetRandom(rat: number, mobile: boolean, tag: string,): 
             var pic_blob = await fetch(sample_url)
 
             //console.log(`${JSON.stringify(pic_blob)}`)
+            return new Response(pic_blob.body, {
+                headers: {
+                    "content-type": "image/jpeg"
+                }
+            })
             return pic_blob
 
         }
