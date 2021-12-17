@@ -32,21 +32,8 @@ export async function ApiGetRandom(rat: number, mobile: boolean, tag: string,): 
 
     for (var i = 0; i < json.length; i++) {
         var post = json[i]
-        //
-        /*
-        var id = post.id
 
-        var Pwidth = post.preview_width
-        var Pheight = post.preview_height
 
-        var score = post.score
-        var tags = post.tags
-        var user = post.author
-        var alt = "Rating: " + rating + " Score: " + score + " Tags: " + tags + " User: " + user
-
-        var preview_image_url = post.preview_url
-        var source_image_url = post.file_url
-        */
         var m = false
         var Swidth = post.width, Sheight = post.height
 
@@ -68,7 +55,11 @@ export async function ApiGetRandom(rat: number, mobile: boolean, tag: string,): 
             //console.log(`${JSON.stringify(pic_blob)}`)
             return new Response(pic_blob.body, {
                 headers: {
-                    "content-type": "image/jpeg"
+                    "content-type": "image/jpeg",
+                    "_fileUrl": post.file_url,
+                    "_id": post.id,
+                    "_tags": post.tags,
+
                 }
             })
 
