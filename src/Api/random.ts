@@ -18,56 +18,38 @@ const ratType = [
  * @returns fetch后资源
  */
 export async function ApiGetRandom(rat: number, mobile: boolean, tag: string,): Promise<Response> {
-    console.log(`rat: ${ratType[rat]}\nmobile: ${mobile}\ntag: ${tag}`)
+    console.log(`rat: ${ratType[rat]}\nmobile: ${mobile}\ntag: ${tag}`);
 
+    var link = `https://yande.re/post.json?tags=order:random ${tag}`;
+    var notFind = 10;
 
-    var link = `https://yande.re/post.json?tags=order:random ${tag}`
+    while (notFind--) {
+        const json: any = await fetch(link).then(res => { return res.json() });
 
-    const json = await fetch(link).then(res => {
-        return res.text()
-    }).then(res => {
-        return JSON.parse(res)
-    })
-    //console.log(json)
+        for (const post of json) {
+            const Swidth = post.width, Sheight = post.height;
+            const m = Swidth < Sheight ? true : false;
+            const rating = post.rating;
+            const sample_url = post.sample_url;
 
-    for (var i = 0; i < json.length; i++) {
-        var post = json[i]
+            if (!ratType[rat].includes(rating)) continue;
+            if (m != mobile) continue;
 
-
-        var m = false
-        var Swidth = post.width, Sheight = post.height
-
-        if (!(Sheight >= 1.3 * Swidth || Swidth >= 1.3 * Sheight)) continue;
-
-        if (Swidth < Sheight) m = true
-
-        var rating = post.rating
-
-
-        if (ratType[rat].includes(rating) && m == mobile) {
-            var sample_url = post.sample_url
-            console.log(`${JSON.stringify(post)}`)
-
+            var pic_blob = await fetch(sample_url);
+            console.log(`${JSON.stringify(post)}`);
             //console.log(`fetch info:\nurl: ${sample_url}\nSwidth: ${Swidth}\nSheight: ${Sheight}`)
-
-            var pic_blob = await fetch(sample_url)
-
             //console.log(`${JSON.stringify(pic_blob)}`)
+
             return new Response(pic_blob.body, {
                 headers: {
                     "content-type": "image/jpeg",
                     "_fileUrl": post.file_url,
                     "_id": post.id,
                     "_tags": post.tags,
-
                 }
-            })
-
+            });
         }
-
-
     }
 
-    return new Response("404")
-
+    return new Response(JSON.stringify({ error: "not found" }));
 }
